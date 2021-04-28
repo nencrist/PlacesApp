@@ -8,11 +8,11 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/registerBtn"
+        style="@style/AppPrimaryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:backgroundTint="#E1493F"
+        android:layout_marginBottom="20dp"
         android:text="Registrar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,10 +45,10 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="57dp"
+        android:layout_width="92dp"
         android:layout_height="32dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         android:text="Datos"
         android:textColor="#F2F2F2"
         android:textSize="18sp"
@@ -59,24 +59,66 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:text="Imagenes"
         android:textColor="#F2F2F2"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="389dp" />
+        app:layout_constraintTop_toBottomOf="@+id/locationBtn" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:id="@+id/placeNameET"
+        style="@style/AppEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/custom_input"
         android:ems="10"
         android:hint="Nombre del sitio"
         android:inputType="textPersonName"
-        android:textColorHint="#B5F2F2F2"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.278"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <ImageButton
+        android:id="@+id/addImageBtn"
+        android:layout_width="46dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/addbtn"
+        android:tint="#F2f2f2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:srcCompat="@drawable/addbtn" />
+
+    <ImageButton
+        android:id="@+id/locationBtn"
+        android:layout_width="44dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/location_btn"
+        android:tint="#B62F2F"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/placeNameET"
+        app:srcCompat="@drawable/location_btn" />
+
+    <ImageView
+        android:id="@+id/pictureChosen"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:maxHeight="80dp"
+        android:maxWidth="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/addImageBtn"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        tools:srcCompat="@tools:sample/avatars" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
