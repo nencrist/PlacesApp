@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.places.models.Place;
 import com.google.android.material.bottomnavigation.BottomNavigationMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         newItemFragment = NewItemFragment.newInstance();
         mapFragment = new MapsFragment();
         listaLugares = ListaLugares.newInstance();
+        newItemFragment.setObserver(listaLugares);
 
         showFragment(newItemFragment);
 
@@ -95,4 +97,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 }

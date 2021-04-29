@@ -1,5 +1,6 @@
 package com.example.places;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,18 +11,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.TextView;
 
+import com.example.places.models.Place;
 import com.example.places.util.Constants;
 import com.example.places.util.HTTPSWebUtilDomi;
+import com.google.gson.Gson;
 
-public class ListaLugares extends Fragment {
+import java.util.ArrayList;
+
+public class ListaLugares extends Fragment implements NewItemFragment.NewPlaceListener {
 
     //variables
     private RecyclerView recyclerView;
-    private String placeNameVar;
     private LinearLayoutManager layoutManager;
     private PlacesAdapter adapter;
+    private static ArrayList<Place> places;
 
     public ListaLugares() {
 
@@ -32,6 +38,7 @@ public class ListaLugares extends Fragment {
         ListaLugares fragment = new ListaLugares();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+        places = new ArrayList<>();
         return fragment;
     }
 
@@ -46,10 +53,24 @@ public class ListaLugares extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PlacesAdapter();
         recyclerView.setAdapter(adapter);
+        adapter.setPlaces(places);
+
 
         return root;
     }
 
+    @Override
+    public void onNewPlace(Place place) {
+        places.add(place);
+    }
+
+    public static ArrayList<Place> getPlaces() {
+        return places;
+    }
+
+    public static void setPlaces(ArrayList<Place> places) {
+        ListaLugares.places = places;
+    }
 }
    /* public void getPlace(){
         HTTPSWebUtilDomi https = new HTTPSWebUtilDomi();

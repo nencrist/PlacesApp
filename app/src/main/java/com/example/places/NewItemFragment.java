@@ -20,33 +20,41 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.places.models.Place;
 import com.example.places.util.Constants;
 import com.example.places.util.HTTPSWebUtilDomi;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
-public class NewItemFragment extends Fragment implements View.OnClickListener, ModalDialog.ImageListener {
+public class NewItemFragment extends Fragment implements View.OnClickListener, ModalDialog.ImageListener, MapsFragment.AddressListener {
 
     //Sate o variables globales
     private MapsFragment mapFragment;
     private ModalDialog dialog;
     private Place place;
     private String imagePath;
-    private PlacesAdapter adapter;
     private RecyclerView recyclerView;
+    private ArrayList<Place> places;
+    private NewPlaceListener observer;
 
     //View
     private EditText placeNameET;
     private ImageButton locationBtn;
     private ImageButton addImageBtn;
     private Button registerBtn;
+    private TextView adressTV;
     private ImageView pictureChosen;
 
     public NewItemFragment() {
         // Required empty public constructor
+    }
+
+    public void setObserver(NewPlaceListener observer){
+        this.observer = observer;
     }
 
 
@@ -69,12 +77,21 @@ public class NewItemFragment extends Fragment implements View.OnClickListener, M
         addImageBtn = root.findViewById(R.id.addImageBtn);
         registerBtn = root.findViewById(R.id.registerBtn);
         pictureChosen = root.findViewById(R.id.pictureChosen);
+        adressTV = root.findViewById(R.id.adressTV);
         locationBtn.setOnClickListener(this);
         addImageBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
         mapFragment = new MapsFragment();
+        mapFragment.setObserver(this);
         place = new Place();
-        adapter = new PlacesAdapter();
+        places = new ArrayList<>();
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("Direccion", getActivity().MODE_PRIVATE);
+        String tempAdress = preferences.getString("tempDirection", "NO_OBJ");
+
+        if (!tempAdress.equals("NO_OBJ")){
+            adressTV.setText(tempAdress);
+        }
 
         return root;
 
@@ -93,6 +110,7 @@ public class NewItemFragment extends Fragment implements View.OnClickListener, M
 
             placeNameET.setText(place.getPlaceName());
             imagePath = place.getImagePath();
+            adressTV.setText(place.getDireccion());
         }
     }
 
@@ -100,7 +118,8 @@ public class NewItemFragment extends Fragment implements View.OnClickListener, M
     public void onPause() {
         String name = placeNameET.getText().toString();
         String pathTemp = imagePath;
-        Place place = new Place(name, pathTemp);
+        String tempAdress = adressTV.getText().toString();
+        Place place = new Place(name, pathTemp, tempAdress);
 
         //json
         Gson gson = new Gson();
@@ -122,6 +141,7 @@ public class NewItemFragment extends Fragment implements View.OnClickListener, M
 
             case R.id.locationBtn:
                     showFragment(mapFragment);
+
                 break;
             case R.id.addImageBtn:
                     dialog = ModalDialog.newInstance();
@@ -132,10 +152,16 @@ public class NewItemFragment extends Fragment implements View.OnClickListener, M
             case R.id.registerBtn:
                 String name = placeNameET.getText().toString();
                 String temp = imagePath;
+                String tempAdress = adressTV.getText().toString();
+                MainActivity mainActivity = (MainActivity) getActivity();
                 Log.e("....", name + temp);
-                Place place = new Place(name, temp);
-                adapter.addPlace(place);
-                Log.e("......", place.getPlaceName() + place.getImagePath());
+                Place place = new Place(name, temp, tempAdress);
+                observer.onNewPlace(place);
+                //mainActivity.addPlace(place);
+               //places.add(place);
+                Log.e("hola", place.getPlaceName() + place.getImagePath() + place.getDireccion());
+
+
                 /*placeN = placeNameET.getText().toString();
                 Place place = new Place(UUID.randomUUID().toString(), placeN, pictureChosen.getId());
                 Gson gson = new Gson();
@@ -169,6 +195,16 @@ public class NewItemFragment extends Fragment implements View.OnClickListener, M
         );
         pictureChosen.setImageBitmap(thumbnail);
         dialog.dismiss();
+    }
+
+    @Override
+    public void onMarkerAdded(String dir) {
+        adressTV.setText(dir);
+        Log.e("dir", adressTV.getText().toString());
+    }
+
+    public interface NewPlaceListener{
+        void onNewPlace(Place place);
     }
 
 

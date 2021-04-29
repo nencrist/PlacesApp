@@ -6,10 +6,12 @@ public class Place {
 
     private String placeName;
     private String imagePath;
+    private String direccion;
 
-    public Place(String placeName, String imagePath) {
+    public Place(String placeName, String imagePath, String direccion) {
         this.placeName = placeName;
         this.imagePath = imagePath;
+        this.direccion = direccion;
     }
 
     public Place() {
@@ -30,5 +32,13 @@ public class Place {
 
     public void setPlaceImage(String placeImage) {
         this.imagePath = imagePath;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 }
